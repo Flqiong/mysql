@@ -1,0 +1,177 @@
+ 熟悉SQL语句
+- 将购物车中的表创建好，并增加"喜欢","折扣提醒",“双11愿望”
+- 在购物车表中增加用户，使用一条和多条一次性插入
+- 更新一个用户的双11愿望记录
+- 删除劣质一个用户
+- 将结果和代码提交到GItHub
+- Good Luck~~
+mysql>  create table shopping11(
+    -> id int(100) auto_increment primary key,
+    -> name varchar(20) not null,
+    -> zhekou int(3) default 1);
+Query OK, 0 rows affected (0.59 sec)
+
+mysql> select * from shopping11;
+Empty set (0.00 sec)
+
+mysql> desc shopping11;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| id     | int(100)    | NO   | PRI | NULL    | auto_increment |
+| name   | varchar(20) | NO   |     | NULL    |                |
+| zhekou | int(3)      | YES  |     | 1       |                |
++--------+-------------+------+-----+---------+----------------+
+3 rows in set (0.06 sec)
+
+mysql> alter table shopping11 add wish11 vachar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'vachar(20)' at line 1
+mysql> alter table shopping11 add wish11 varchar(20);
+Query OK, 0 rows affected (0.43 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>  alter table shopping11 add like varchar(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'like varchar(20)' at line 1
+mysql>  alter table shopping11 add like int(1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'like int(1)' at line 1
+mysql>  alter table shopping11 add xihuan int(2);
+Query OK, 0 rows affected (0.39 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>  alter table shopping11 add money int(5);
+Query OK, 0 rows affected (0.31 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc shopping11;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| id     | int(100)    | NO   | PRI | NULL    | auto_increment |
+| name   | varchar(20) | NO   |     | NULL    |                |
+| zhekou | int(3)      | YES  |     | 1       |                |
+| wish11 | varchar(20) | YES  |     | NULL    |                |
+| xihuan | int(2)      | YES  |     | NULL    |                |
+| money  | int(5)      | YES  |     | NULL    |                |
++--------+-------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> insert into shopping11(
+    -> name,zhekou,wish11,xihuan,money)values( 'qiong','tx','yurongfu','y','200');
+ERROR 1366 (HY000): Incorrect integer value: 'tx' for column 'zhekou' at row 1
+mysql> insert into shopping11(
+    -> name,zhekou,wish11,xihuan,money)values( 'qiong','01','yurongfu','y','200');
+ERROR 1366 (HY000): Incorrect integer value: 'y' for column 'xihuan' at row 1
+mysql> insert into shopping11(
+    ->  name,zhekou,wish11,xihuan,money)values( 'qiong','01','yurongfu','0','200');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select * from shopping11;
++----+-------+--------+----------+--------+-------+
+| id | name  | zhekou | wish11   | xihuan | money |
++----+-------+--------+----------+--------+-------+
+|  1 | qiong |      1 | yurongfu |      0 |   200 |
++----+-------+--------+----------+--------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into shopping11( name) values( 'suya'),( 'yue'),( 'jia');
+Query OK, 3 rows affected (0.16 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from shopping11;
++----+-------+--------+----------+--------+-------+
+| id | name  | zhekou | wish11   | xihuan | money |
++----+-------+--------+----------+--------+-------+
+|  1 | qiong |      1 | yurongfu |      0 |   200 |
+|  2 | suya  |      1 | NULL     |   NULL |  NULL |
+|  3 | yue   |      1 | NULL     |   NULL |  NULL |
+|  4 | jia   |      1 | NULL     |   NULL |  NULL |
++----+-------+--------+----------+--------+-------+
+4 rows in set (0.00 sec)
+
+mysql> update shopping11 set name='sanzhisongshu' where id=2;
+Query OK, 1 row affected (0.16 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from shopping11;
++----+---------------+--------+----------+--------+-------+
+| id | name          | zhekou | wish11   | xihuan | money |
++----+---------------+--------+----------+--------+-------+
+|  1 | qiong         |      1 | yurongfu |      0 |   200 |
+|  2 | sanzhisongshu |      1 | NULL     |   NULL |  NULL |
+|  3 | yue           |      1 | NULL     |   NULL |  NULL |
+|  4 | jia           |      1 | NULL     |   NULL |  NULL |
++----+---------------+--------+----------+--------+-------+
+4 rows in set (0.00 sec)
+
+mysql> update shopping11 set name='suya' where id=2;
+Query OK, 1 row affected (0.19 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update shopping11 set wish11='sanzhisongshu' where id=2;
+Query OK, 1 row affected (0.13 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update shopping11 set wish11='baijingting' where id=3;
+Query OK, 1 row affected (0.22 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from shopping11;
++----+-------+--------+---------------+--------+-------+
+| id | name  | zhekou | wish11        | xihuan | money |
++----+-------+--------+---------------+--------+-------+
+|  1 | qiong |      1 | yurongfu      |      0 |   200 |
+|  2 | suya  |      1 | sanzhisongshu |   NULL |  NULL |
+|  3 | yue   |      1 | baijingting   |   NULL |  NULL |
+|  4 | jia   |      1 | NULL          |   NULL |  NULL |
++----+-------+--------+---------------+--------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table add idDelete varchar(1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add idDelete varchar(1)' at line 1
+mysql> alter table shopping11 add idDelete varchar(1);
+Query OK, 0 rows affected (1.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from shopping11;
++----+-------+--------+---------------+--------+-------+----------+
+| id | name  | zhekou | wish11        | xihuan | money | idDelete |
++----+-------+--------+---------------+--------+-------+----------+
+|  1 | qiong |      1 | yurongfu      |      0 |   200 | NULL     |
+|  2 | suya  |      1 | sanzhisongshu |   NULL |  NULL | NULL     |
+|  3 | yue   |      1 | baijingting   |   NULL |  NULL | NULL     |
+|  4 | jia   |      1 | NULL          |   NULL |  NULL | NULL     |
++----+-------+--------+---------------+--------+-------+----------+
+4 rows in set (0.00 sec)
+
+mysql> desc shopping11;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| id       | int(100)    | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(20) | NO   |     | NULL    |                |
+| zhekou   | int(3)      | YES  |     | 1       |                |
+| wish11   | varchar(20) | YES  |     | NULL    |                |
+| xihuan   | int(2)      | YES  |     | NULL    |                |
+| money    | int(5)      | YES  |     | NULL    |                |
+| idDelete | varchar(1)  | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+7 rows in set (0.10 sec)
+
+mysql> insert into shopping11( idDelete) values( '0');
+ERROR 1364 (HY000): Field 'name' doesn't have a default value
+mysql> update shopping11 set idDelete='1' where id=4;
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from shopping11;
++----+-------+--------+---------------+--------+-------+----------+
+| id | name  | zhekou | wish11        | xihuan | money | idDelete |
++----+-------+--------+---------------+--------+-------+----------+
+|  1 | qiong |      1 | yurongfu      |      0 |   200 | NULL     |
+|  2 | suya  |      1 | sanzhisongshu |   NULL |  NULL | NULL     |
+|  3 | yue   |      1 | baijingting   |   NULL |  NULL | NULL     |
+|  4 | jia   |      1 | NULL          |   NULL |  NULL | 1        |
++----+-------+--------+---------------+--------+-------+----------+
+4 rows in set (0.00 sec)
+
+mysql>
