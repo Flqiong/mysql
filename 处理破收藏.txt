@@ -1,0 +1,111 @@
+mysql> create database homework;
+Query OK, 1 row affected (0.37 sec)
+
+mysql> create table t(useid int unique primary key,wupin varchar(20) not null,favorites enum('Y','N'));
+ERROR 1046 (3D000): No database selected
+mysql> use homework;
+Database changed
+mysql> create table t(useid int unique primary key,wupin varchar(20) not null,favorites enum('Y','N'));
+Query OK, 0 rows affected (1.76 sec)
+
+mysql> desc t;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| useid     | int(11)       | NO   | PRI | NULL    |       |
+| wupin     | varchar(20)   | NO   |     | NULL    |       |
+| favorites | enum('Y','N') | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+3 rows in set (0.18 sec)
+
+mysql> insert into t(
+    -> useid,wupin,favorites) values(
+    -> ;,mofabang,
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+    -> alter table t change useid userid varchar(20) unique primary key;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',mofabang,
+alter table t change useid userid varchar(20) unique primary key' at line 1
+mysql> insert into t(
+    -> useid,wupin,favorites) values(
+    -> 01,'mofabang','y'),(02,'nanpiao','n'),(05,'aj','n');
+Query OK, 3 rows affected (0.30 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select t;
+ERROR 1054 (42S22): Unknown column 't' in 'field list'
+mysql> select * from t;
++-------+----------+-----------+
+| useid | wupin    | favorites |
++-------+----------+-----------+
+|     1 | mofabang | Y         |
+|     2 | nanpiao  | N         |
+|     5 | aj       | N         |
++-------+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> alter table t add TS timestamp not null default current_timestamp);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> alter table t add TS timestamp not null default current_timestamp;
+Query OK, 0 rows affected (0.55 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from favorites;
+ERROR 1146 (42S02): Table 'homework.favorites' doesn't exist
+mysql> select * from t;
++-------+----------+-----------+---------------------+
+| useid | wupin    | favorites | TS                  |
++-------+----------+-----------+---------------------+
+|     1 | mofabang | Y         | 2018-11-11 23:59:16 |
+|     2 | nanpiao  | N         | 2018-11-11 23:59:16 |
+|     5 | aj       | N         | 2018-11-11 23:59:16 |
++-------+----------+-----------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into t(
+    -> useid,wupin,favortes) values(
+    -> 6,'latiao','1');
+ERROR 1054 (42S22): Unknown column 'favortes' in 'field list'
+mysql> insert into t(
+    -> useid,wupin,favorites) values(
+    -> 6,'latiao','1');
+Query OK, 1 row affected (0.18 sec)
+
+mysql> select * from t;
++-------+----------+-----------+---------------------+
+| useid | wupin    | favorites | TS                  |
++-------+----------+-----------+---------------------+
+|     1 | mofabang | Y         | 2018-11-11 23:59:16 |
+|     2 | nanpiao  | N         | 2018-11-11 23:59:16 |
+|     5 | aj       | N         | 2018-11-11 23:59:16 |
+|     6 | latiao   | Y         | 2018-11-12 00:02:00 |
++-------+----------+-----------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into t(
+    -> useid,wupin,favorites) values(
+    -> 6,'haoyun','3');
+ERROR 1265 (01000): Data truncated for column 'favorites' at row 1
+mysql> insert into t(
+    -> useid,wupin,favorites) values(
+    -> 6,'latiao','2');
+ERROR 1062 (23000): Duplicate entry '6' for key 'PRIMARY'
+mysql> insert into t(
+    -> useid,wupin,favorites) values(
+    -> 4,'haoyun','3');
+ERROR 1265 (01000): Data truncated for column 'favorites' at row 1
+mysql> insert into t(
+    -> useid,wupin,favorites) values(
+    -> 4,'latiao','2');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> select * from t;
++-------+----------+-----------+---------------------+
+| useid | wupin    | favorites | TS                  |
++-------+----------+-----------+---------------------+
+|     1 | mofabang | Y         | 2018-11-11 23:59:16 |
+|     2 | nanpiao  | N         | 2018-11-11 23:59:16 |
+|     4 | latiao   | N         | 2018-11-12 00:06:01 |
+|     5 | aj       | N         | 2018-11-11 23:59:16 |
+|     6 | latiao   | Y         | 2018-11-12 00:02:00 |
++-------+----------+-----------+---------------------+
+5 rows in set (0.00 sec)
