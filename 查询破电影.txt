@@ -1,0 +1,97 @@
+创建一个电影列表
+
+- 列表中含有电影名字，年份，导演，评分
+- 功能要求：
+  - 模糊查询电影名字
+  - 模糊查询导演名字
+  - 查询某年份的电影
+  - 查询评高分电影
+
+
+mysql> create table movies(
+    -> name varchar(100) not null,year int(4) not null,director varchar(30) not null,score int);
+Query OK, 0 rows affected (1.59 sec)
+
+mysql> insert into movies(
+    -> name,year,director,score) values(
+    -> 'duye',2018,'guizhidao',6.8),('yiwuzhi',2019,'li',9.9),('kenan',2018,'fulq',8.6),
+    ->  ('shabusi',2017,'lihongchou',9.8),('yiwuzhi2',2018,'yangyu',9.7),('shubusijh',2017,'ssyangyu',9.6);
+Query OK, 6 rows affected (0.55 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from movies;
++-----------+------+------------+-------+
+| name      | year | director   | score |
++-----------+------+------------+-------+
+| duye      | 2018 | guizhidao  |     7 |
+| yiwuzhi   | 2019 | li         |    10 |
+| kenan     | 2018 | fulq       |     9 |
+| shabusi   | 2017 | lihongchou |    10 |
+| yiwuzhi2  | 2018 | yangyu     |    10 |
+| shubusijh | 2017 | ssyangyu   |    10 |
++-----------+------+------------+-------+
+6 rows in set (0.51 sec)
+
+mysql> select name from movies where name like '%yiwuzhi%';
++----------+
+| name     |
++----------+
+| yiwuzhi  |
+| yiwuzhi2 |
++----------+
+2 rows in set (0.18 sec)
+
+mysql> select year from movies where year like '%yangyu%';
+Empty set (0.13 sec)
+
+mysql> select year from movies where year like '%2018%';
++------+
+| year |
++------+
+| 2018 |
+| 2018 |
+| 2018 |
++------+
+3 rows in set (0.00 sec)
+
+mysql> select name from movies where year like '%2018%';
++----------+
+| name     |
++----------+
+| duye     |
+| kenan    |
+| yiwuzhi2 |
++----------+
+3 rows in set (0.00 sec)
+
+mysql> select name from movies where director like '%yangyu%';
++-----------+
+| name      |
++-----------+
+| yiwuzhi2  |
+| shubusijh |
++-----------+
+2 rows in set (0.00 sec)
+
+mysql> select name from movies where director>=9;
+Empty set, 5 warnings (0.10 sec)
+
+mysql> select name from movies where score>=9;
++-----------+
+| name      |
++-----------+
+| yiwuzhi   |
+| kenan     |
+| shabusi   |
+| yiwuzhi2  |
+| shubusijh |
++-----------+
+5 rows in set (0.02 sec)
+
+mysql> select name from movies where score>=9 group by score;
++---------+
+| name    |
++---------+
+| yiwuzhi |
+| kenan   |
++---------+
